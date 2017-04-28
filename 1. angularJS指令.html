@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angularJS指令</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <script src="angular.js"></script>
+    <script>
+      var app = angular.module('myApp', []);
+      app.directive('ningTao', function () {
+        return {
+          template: "<p>帅气涛，你吃放了吗</p>"
+        };
+      });
+    </script>
+</head>
+<body>
+<br/>
+<div class="container">
+    <article ng-app="myApp">
+        <blockquote>angularJS指令</blockquote>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>ng-app：</label>
+                初始化一个angularJS程序，只有在这个里面写ng-指令才有效
+            </li>
+            <li class="list-group-item">
+                <label>ng-init：</label>
+                初始化数据，类似React的getInitialState
+            </li>
+            <li class="list-group-item">
+                <label>ng-model：</label>
+                绑定数据，属性名可以在其它地方调用，例如绑定input，其它地方将同步更新
+            </li>
+            <li class="list-group-item">
+                <label>ng-repeat：</label>
+                重复，类似Jquery的clone
+            </li>
+        </ul>
+        <div class="form-horizontal" ng-app="ngLocale">
+            <div class="form-group">
+                <label class="control-label col-lg-3">输入：</label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" placeholder="" ng-model="greetings">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3">你好，</label>
+                <div class="col-lg-7" style="padding-top: 7px">{{ greetings }}</div>
+            </div>
+            <div class="form-group" ng-init="girls=['刘芬','王珍','于霄霄']">
+                <label class="col-lg-3" style="text-align: right">使用ng-repeat</label>
+                <div class="col-lg-7">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="x in girls">{{ x }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group" ng-init="girlAbouts=[
+                { name: '刘芬', description: '成绩很好，人也可以，长得很可爱' },
+                { name: '王珍', description: '身材很好，性格十分外向' },
+                { name: '于霄霄', description: '脸蛋很好，善于交际，唯一缺点就是胸小' }
+            ]">
+                <label class="col-lg-3" style="text-align: right">ng-repeat重复数组对象</label>
+                <div class="col-lg-7">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="x in girlAbouts">
+                            {{ x.name }} ---- {{ x.description }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <section>
+            <h3>创建自定义的指令</h3>
+            <ning-tao></ning-tao>
+            <p>
+                <label class="label label-info">tip</label>
+                <del>自定义指令起码要两层以上才有用，或者是在body元素上</del>
+                不能放在空div里，例：<code>&lt;div&lt;ning-tao>&lt;./ning-tao>&lt;/div></code>
+            </p>
+            <label>js代码：</label>
+            <pre>
+                var app = angular.module('myApp', []);
+                app.directive('ningTao', function () {
+                  return {
+                    template: "&lt;p>帅气涛，你吃放了吗&lt;/p>"
+                  };
+                });</pre>
+        </section>
+        <section>
+            <h3>调用指令、方式</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>E <sub>element</sub></strong>
+                    ------作为元素名调用------&lt;ning-tao>&lt;/ning-tao>
+                </li>
+                <li class="list-group-item">
+                    <strong>A <sub>attribute</sub></strong>
+                    ------作为属性使用------&lt;div ning-tao>&lt;/div>
+                </li>
+                <li class="list-group-item">
+                    <strong>C <sub>class</sub></strong>
+                    ------作为类名使用------&lt;div class="ning-tao">&lt;/div>
+                </li>
+                <li class="list-group-item">
+                    <strong>M <sub>annotation(为毛是M，我不知道)</sub></strong>
+                    ------作为注释使用------&lt;!--  ning-tao  -->
+                </li>
+            </ul>
+            <pre>
+                app.directive('ningTao', function(){
+                  return {
+                    restrict: '<strong>C</strong>',
+                    template: '&lt;p>帅气涛，你吃放了吗&lt;/p>'
+                  };
+                });
+            </pre>
+        </section>
+    </article>
+</div>
+</body>
+</html>
