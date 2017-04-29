@@ -12,6 +12,11 @@
           template: "<p>帅气涛，你吃放了吗</p>"
         };
       });
+
+      var app1 = angular.module('myApp1', []);
+      app1.controller('myCtrl1', function($scope){
+        $scope.myName = '帅气涛';
+      });
     </script>
 </head>
 <body>
@@ -117,6 +122,15 @@
                 });
             </pre>
         </section>
+    </article>
+    <article ng-app="myApp1" ng-controller="myCtrl1">
+        <blockquote>angularJS模型 ng-model</blockquote>
+        <div class="form-horizontal">
+            <label class="control-label col-lg-4">名字：</label>
+            <div class="col-lg-6">
+                <input type="text" class="form-control" ng-model="myName">
+            </div>
+        </div>
     </article>
 </div>
 </body>
