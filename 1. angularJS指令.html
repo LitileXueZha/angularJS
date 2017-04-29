@@ -28,6 +28,8 @@
             <li class="list-group-item">
                 <label>ng-app：</label>
                 初始化一个angularJS程序，只有在这个里面写ng-指令才有效
+                <br>
+                <span style="color: blue;font-size:10px">tip: 这个指令最好一个页面只出现一次，angular在找到第一个后就不会再找了</span>
             </li>
             <li class="list-group-item">
                 <label>ng-init：</label>
@@ -131,6 +133,16 @@
                 <input type="text" class="form-control" ng-model="myName">
             </div>
         </div>
+        <p>也就是把绑定一下数据，我这里好像木有啥用</p>
+        <h4>几个Css类：</h4>
+        <ul class="list-group">
+            <li class="list-group-item">ng-empty ----- ng-not-empty</li>
+            <li class="list-group-item">ng-touched ----- ng-untouched</li>
+            <li class="list-group-item">ng-valid ----- ng-invalid</li>
+            <li class="list-group-item">ng-dirty <small>这是什么鬼，前面倒是见字如面</small></li>
+            <li class="list-group-item">ng-pending <small>就是执行中....</small></li>
+            <li class="list-group-item">ng-pristine <small>原状态</small></li>
+        </ul>
     </article>
 </div>
 </body>

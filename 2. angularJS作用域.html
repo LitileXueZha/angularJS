@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作用域 -- Scope</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <script src="angular.js"></script>
+    <style>
+        p{
+            text-indent: 2em;
+        }
+        .tip{
+            color: blue;
+        }
+    </style>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl1', function ($scope) {
+          $scope.greetings = '你吃饭了吗?';
+        });
+        app.controller('myCtrl2', function ($scope) {
+          $scope.name = '帅气涛';
+          $scope.goodYou = function () {
+            $scope.greetings = $scope.name +'，你吃饭了吗';
+          }
+        });
+        app.controller('myCtrl3', function ($scope, $rootScope) {
+          $scope.foreigners = ['Mew', 'Ydsa', 'Enend'];
+          $rootScope.lastname = 'Mary';
+        });
+
+
+
+        window.onload = function () {
+          var canvas = document.getElementById('mvc');
+          var pen = canvas.getContext('2d');
+          canvas.width = 600;
+          canvas.height = 300;
+          pen.textAlign = 'center';
+          pen.save();
+          pen.shadowOffsetX = 0;
+          pen.shadowOffsetY = 0;
+          pen.shadowBlur = 10;
+          pen.shadowColor = 'red';
+          pen.fillStyle = 'rgba(0,0,0,0.6)';
+          pen.fillRect(50,50,100,50);     //   1
+          pen.fillRect(450,50,100,50);    //   2
+          pen.fillRect(250,200,100,50);   //   3
+          pen.restore();
+          //  三个文本框
+          pen.save();
+          pen.fillStyle = 'white';
+          pen.textBaseline = 'middle';
+          pen.shadowOffsetX = 0;
+          pen.shadowOffsetY = 0;
+          pen.shadowBlur = 10;
+          pen.shadowColor = 'white';
+          pen.fillText('Model', 100,75);
+          pen.fillText('View', 500, 75);
+          pen.fillText('Controller', 300, 225);
+          pen.restore();
+          //  三个文本
+          pen.beginPath();
+          pen.moveTo(170,75);
+          pen.lineTo(430,75);
+          pen.lineTo(425,70);
+          pen.moveTo(430,75);
+          pen.lineTo(425,80);
+          //  1
+          pen.moveTo(500,110);
+          pen.lineTo(380,230);
+          pen.lineTo(380,220);
+          pen.moveTo(380,230);     //  120, (440, 170)
+          pen.lineTo(390,230);
+          // 2
+          pen.moveTo(220,230);
+          pen.lineTo(100,110);    //  120, (160, 170)
+          pen.lineTo(100,120);
+          pen.moveTo(100,110);
+          pen.lineTo(110,110);
+          //  3
+          pen.stroke();
+          pen.fillText('初始化的数据，视图中可用数据', 300, 60);
+          pen.save();
+          pen.translate(400,170);
+          pen.rotate(-Math.PI/4);
+          pen.textBaseline = 'top';
+          pen.fillText('视图就是HTML', 20,0);
+          pen.restore();
+          pen.save();
+          pen.translate(145,185);
+          pen.rotate(Math.PI/4);
+          pen.fillText('即JavaScript函数，可以添加或修改属性', 0,0);
+          pen.restore();
+        };  //  画布
+    </script>
+</head>
+<body ng-app="myApp">
+<div class="container">
+    <section>
+        <blockquote>$scope</blockquote>
+        <p>什么意思呢？就是说html和js之间的纽带</p>
+        <ul class="list-group">
+            <li class="list-group-item">一个对象，，有可用的属性和方法</li>
+            <li class="list-group-item">可用在视图View和控制器Controller上</li>
+        </ul>
+        <label>Example：</label>
+        <div ng-controller="myCtrl1">
+            <p>帅气涛，<b>{{ greetings }}</b></p>
+            <p>注意加粗部分，我是用$scope.greetings传过去的，打开<kbd>F12</kbd>看了下DOM结构，发现上面有个class叫ng-binding，估计是通过.....。顺便说一句，为毛我上个页面没用？？？？</p>
+        </div>
+    </section>
+    <br/>
+    <section>
+        <h4>angularJS的<b>MVC</b>如下图</h4>
+        <div style="text-align: center">
+            <canvas id="mvc"></canvas>
+        </div>
+        <label>Example：</label>
+        <div id="a2" ng-controller="myCtrl2">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="name">
+                <span class="input-group-btn">
+                    <button class="btn btn-success" ng-click="goodYou()">点一下</button>
+                </span>
+            </div>
+            <p>{{ greetings }}</p>
+        </div>
+        <p>这里修改了视图（在input里输入），然后模型（数据）和控制器（js里的属性）也会相应地改变</p>
+    </section>
+    <br>
+    <section>
+        <h5>
+            了解ng里的作用域范围十分重要，每个controller里就是一个$scope，相当于一个局部变量。应用里有个<b>$rootscope</b>，相当于
+            全局变量，可以在每一个controller里使用
+        </h5>
+        <div ng-controller="myCtrl3">
+            <dl class="list-group">
+                <dt class="list-group-item active">姓氏为{{ lastname }}的老外</dt>
+                <dd class="list-group-item" ng-repeat="x in foreigners">{{ x }} {{ lastname }}</dd>
+            </dl>
+        </div>
+        <pre>
+            app.controller('myCtrl3', function ($scope, <b>$rootScope</b>) {
+              $scope.foreigners = ['Mew', 'Ydsa', 'Enend'];
+              $rootScope.lastname = 'Mary';
+            });</pre>
+        <span class="tip">Tip：上面需要传入两个参数，否则会报错<span style="color: red;">Error: $rootScope未定义</span></span>
+    </section>
+</div>
+<br><br><br><br><br><br><br>
+</body>
+</html>
