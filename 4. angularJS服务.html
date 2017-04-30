@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>服务，service</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <script src="angular.js"></script>
+    <style>
+        p{
+            text-indent: 2em;
+        }
+        .tip{
+            color: blue;
+        }
+    </style>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('ctrl1', function ($scope, $location) {
+          $scope.myUrl = $location.absUrl();
+        });
+        app.controller('ctrl2', function ($scope, $http) {
+          $http.get('test.php').then(function (res) {
+            console.log(res);
+            $scope.greetings = res.data;
+          })
+        });
+    </script>
+</head>
+<body ng-app="myApp">
+<div class="container">
+    <article>
+        <blockquote>angularJS服务</blockquote>
+        <p>什么是angularJS的服务？就是我们前端能用的ng提供的工具，类似于Jquery提供的函数、BOM对象啊啥的</p>
+        <br/><br/>
+        <div class="progress">
+            <div class="progress-bar" style="width: 20%;">$location</div>
+        </div>
+        <p ng-controller="ctrl1">当前绝对url：{{ myUrl }}</p>
+        <pre>
+            app.controller('ctrl1', function ($scope, <b>$location</b>) {
+                $scope.myUrl = $location.<b>absUrl()</b>;  <span class="tip">//  注意是个方法,并且需要当作参数传进去</span>
+            });</pre>
+        <br/><br/>
+        <div class="progress">
+            <div class="progress-bar" style="width: 40%;">$http</div>
+        </div>
+        <h3 ng-controller="ctrl2">{{ greetings }}&nbsp;</h3>
+        <pre>
+            app.controller('ctrl2', function ($scope, <b>$http</b>) {
+              $http.get('test.php').<b>then</b>(function (res) {
+                console.log(res);
+                $scope.greetings = res.data;
+              })
+            });
+
+            <span class="tip">//  php代码、test.php：</span>
+            &lt;?php
+                echo '帅气涛，你吃饭了吗？'
+            ?>
+
+            <span class="tip">//  返回的格式、res:</span>
+            config: {
+                headers: {
+                    jsonpCallbackParam: "callback",
+                    method: "GET",
+                    paramSerializer: function ngParamSerializer(params),
+                    transformRequest: Array(1),
+                    transformResponse: Array(1),
+                    url: "test.php",
+                    <small>__proto__</small>: Object
+                },
+                <u>data: "帅气涛，你吃饭了吗？"</u>,
+                headers: function (name),
+                status: 200,
+                statusText: "OK",
+                <small>__proto__</small>: Object
+            }</pre>
+        <p>我们可以清楚的看到怎么调用、以及返回的数据，通常我们只要下划线那部分，<b>res.data</b>即可</p>
+    </article>
+</div>
+</body>
+</html>

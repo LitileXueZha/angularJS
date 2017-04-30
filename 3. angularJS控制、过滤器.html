@@ -9,6 +9,9 @@
         p{
             text-indent: 2em;
         }
+        .tip{
+            color: blue;
+        }
     </style>
     <script>
         var app = angular.module('myApp', []);
@@ -17,6 +20,40 @@
           $scope.phone = '18255447846';
           $scope.getInfomation = function () {
             return $scope.name +'  '+ $scope.phone;
+          }
+        });
+        app.controller('ctrl2', function ($scope) {
+          $scope.firstname = 'Nkde';
+          $scope.lastname = 'Hiew';
+        });
+        app.controller('ctrl3', function ($scope) {
+          $scope.number = 2;
+          $scope.price = 2.99;
+        });
+        app.controller('ctrl4', function ($scope) {
+          $scope.men = [
+            { name: '帅气涛', province: '江西' },
+            { name: '渣比健', province: '淮南' },
+            { name: '菜鸡飞', province: '合肥' }
+          ];
+        });
+        app.controller('ctrl5', function ($scope) {
+          $scope.men = [
+            { name: 'Mary', country: 'England' },
+            { name: 'Jack', country: 'France' },
+            { name: 'Alice', country: 'America' }
+            ];
+        });
+        app.controller('ctrl6', function ($scope) {
+          $scope.word = 'helloworld';
+        });
+        app.filter('reverse', function () {
+          return function (text) {
+            return text.split('').filter(function (v) {
+              if(v !== ' '){
+                return v;
+              }
+            }).reverse().join('');
           }
         });
     </script>
@@ -63,6 +100,101 @@
                     </li>
                 </ul>
             </div>
+            <pre>
+                app.controller('ctrl1', function ($scope) {
+                  $scope.name = '帅气涛';
+                  $scope.phone = '18255447846';
+                  $scope.getInfomation = function () {
+                    return $scope.name +'  '+ $scope.phone;
+                  }
+                });</pre>
+            <p>里面方法的调用直接写，就跟属性一样</p>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <label>调用属性：</label>
+                    <code>&lt;p>{{ <b>property</b> }}&lt;/p></code>
+                    <span class="tip">属性：name</span>
+                </li>
+                <li class="list-group-item">
+                    <label>调用方法：</label>
+                    <code>&lt;p>{{ <b>functionName()</b> }}&lt;/p></code>
+                    <span class="tip">方法：getName()</span>
+                </li>
+            </ul>
+        </div>
+    </article>
+    <article>
+        <blockquote>过滤器，<strong>|</strong></blockquote>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>过滤器</th>
+                <th>说明</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>currency</td>
+                <td>格式化数字为货币格式</td>
+            </tr>
+            <tr>
+                <td>filter</td>
+                <td>从数组项中选择一个子集</td>
+            </tr>
+            <tr>
+                <td>lowercase</td>
+                <td>小写，Bootstrap类text-lowercase</td>
+            </tr>
+            <tr>
+                <td>orderBy</td>
+                <td>根据表达式排列数据</td>
+            </tr>
+            <tr>
+                <td>uppercase</td>
+                <td>大写，Bootstrap类text-uppercase</td>
+            </tr>
+        </table>
+        <ul class="list-group">
+            <li class="list-group-item" ng-controller="ctrl2">
+                lowercase || uppercase
+                <i>
+                    <span>{{ firstname | lowercase }}</span>
+                    <span>{{ lastname | uppercase }}</span>
+                </i>
+            </li>
+            <li class="list-group-item" ng-controller="ctrl3">
+                currency
+                <span class="pull-right">{{ number*price | currency }}</span>
+                <div class="input-group">
+                    <span class="input-group-addon">数量：</span>
+                    <input type="number" class="form-control" ng-model="number">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">价格：</span>
+                    <input type="number" class="form-control" ng-model="price">
+                </div>
+            </li>
+            <li class="list-group-item" ng-controller="ctrl4">
+                orderBy
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="x in men | orderBy:'province'">
+                        {{ x.name }} <sub>在</sub> {{ x.province }}
+                    </li>
+                </ul>
+            </li>
+            <li class="list-group-item" ng-controller="ctrl5">
+                filter
+                <input type="text" class="form-control" ng-model="filterValue">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="x in men | filter:filterValue">
+                        <b>{{ x.name }}</b><small> live in </small><b>{{ x.country }}</b>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>自定义过滤器</h4>
+        <div ng-controller="ctrl6">
+            <input type="text" class="form-control" ng-model="word">
+            <p>结果：{{ word | reverse }}</p>
         </div>
     </article>
 </div>
