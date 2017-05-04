@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>服务，service</title>
+    <link rel="icon" href="icon.ico">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <script src="angular.js"></script>
     <style>
@@ -23,6 +24,41 @@
             console.log(res);
             $scope.greetings = res.data;
           })
+        });
+        app.controller('ctrl3', function ($scope, $timeout) {
+          $scope.sentence = '帅气涛，你吃饭了吗';
+          $timeout(function () {
+            $scope.sentence = '放手一搏令谁都惭愧，迎着风极速去超越';
+          }, 2000);
+        });
+        app.controller('ctrl4', function ($scope, $interval) {
+          $scope.time = new Date().toLocaleString();
+          $interval(function () {
+            $scope.time = new Date().toLocaleString();
+          });
+        });
+        app.controller('ctrl5', function ($scope) {
+          $scope.areaCode = '+86';
+          $scope.number = '18255447846';
+          $scope.$watch('areaCode', function () {
+            $scope.telephone = $scope.areaCode +'-'+ $scope.number;
+          });
+          $scope.$watch('number', function () {
+            $scope.telephone = $scope.areaCode +'-'+ $scope.number;
+          });
+        });
+
+        app.service('formact', function () {
+          this.doIt = function (num) {
+            return num.toString(16);
+          };
+        });
+        app.controller('ctrl6', function ($scope, formact) {
+          $scope.numberO = 255;
+          $scope.number = formact.doIt($scope.numberO);
+          $scope.$watch('numberO', function () {
+            $scope.number = formact.doIt(parseInt($scope.numberO));
+          });
         });
     </script>
 </head>
@@ -76,7 +112,99 @@
                 <small>__proto__</small>: Object
             }</pre>
         <p>我们可以清楚的看到怎么调用、以及返回的数据，通常我们只要下划线那部分，<b>res.data</b>即可</p>
+        <br/><br/>
+        <div class="progress">
+            <div class="progress-bar" style="width: 60%;">$timeout</div>
+        </div>
+        <p>下面这句话将在两秒后改变：</p>
+        <label ng-controller="ctrl3">{{ sentence }}</label>
+        <pre>
+            app.controller('ctrl3', function ($scope, $timeout) {
+              $scope.sentence = '帅气涛，你吃饭了吗';
+              $timeout(function () {
+                $scope.sentence = '放手一搏令谁都惭愧，迎着风极速去超越';
+              }, 2000);
+            })</pre>
+        <span>很简单的调用，跟setTimeout类似，传入要执行的方法以及间隔事件即可</span>
+        <br/><br/><br/>
+        <div class="progress">
+            <div class="progress-bar" style="width: 80%;">$interval</div>
+        </div>
+        <div class="alert alert-info alert-dismissable" ng-controller="ctrl4">
+            <button class="close" data-dismiss="alert">&times;</button>
+            当前时间为：<b>{{ time }}</b>
+        </div>
+        <p>用法和上一个服务一样。</p>
+        <br/><br/>
+        <div class="progress">
+            <div class="progress-bar" style="width: 100%;">$watch</div>
+        </div>
+        <p>监听某一部分的变化更新另一部分，直接写<code>$scope.name = $scope.inputValue;</code>是没有用的</p>
+        <div class="row" ng-controller="ctrl5">
+            <div class="col-lg-4"><input type="text" class="form-control" placeholder="区号" ng-model="areaCode"></div>
+            <div class="col-lg-8"><input type="text" class="form-control" placeholder="电话" ng-model="number"></div>
+            <div class="col-lg-12">
+                <table class="table">
+                    <tr>
+                        <th>区号</th>
+                        <td>{{ areaCode }}</td>
+                    </tr>
+                    <tr>
+                        <th>电话</th>
+                        <td>{{ number }}</td>
+                    </tr>
+                    <tr>
+                        <th>联系电话</th>
+                        <td>{{ telephone }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <pre>
+            app.controller('ctrl5', function ($scope) {
+              $scope.areaCode = '+86';
+              $scope.number = '18255447846';
+              $scope.<b><u>$watch</u></b>('areaCode', function () {
+                $scope.telephone = $scope.areaCode +'-'+ $scope.number;
+              });
+              $scope.<b><u>$watch</u></b>('number', function () {
+                $scope.telephone = $scope.areaCode +'-'+ $scope.number;
+              });
+            });</pre>
+        <label class="label label-danger">注意代码中加粗、下划线部分</label>
+        <div class="page-header">
+            <h3>创建自定义服务</h3>
+        </div>
+        <div ng-controller="ctrl6">
+            <label>创建：</label>
+            <pre>
+                app.service('formact', function () {
+                  this.doIt = function (num) {
+                    return num.toString(16);
+                  };
+                });</pre>
+            <label>使用：</label>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="numberO">
+                <span class="input-group-addon">{{ number }}</span>
+            </div>
+        </div>
+        <pre>
+            app.service('formact', function () {
+              this.doIt = function (num) {
+                return num.toString(16);
+              };
+            });
+            app.controller('ctrl6', function ($scope, formact) {
+              $scope.numberO = 255;
+              $scope.number = formact.doIt($scope.numberO);
+              $scope.$watch('numberO', function () {
+                $scope.number = formact.doIt(parseInt($scope.numberO));
+              });
+            });</pre>
+        <p>使用<code>app.service()</code>创建自定义服务，再controller()中传入这个，调用即可，这里我感觉这个服务倒是有点像构造函数</p>
     </article>
 </div>
+<br/><br/>
 </body>
 </html>
