@@ -204,6 +204,29 @@
             });</pre>
         <p>使用<code>app.service()</code>创建自定义服务，再controller()中传入这个，调用即可，这里我感觉这个服务倒是有点像构造函数</p>
     </article>
+    <hr/>
+    <fieldset>
+        <legend>$http</legend>
+        <h3>AngularJS XMLHttpRequest</h3>
+        <label>使用格式：</label>
+        <pre>
+            $http({
+                method: 'GET',
+                url: 'test.php'
+            }).then(function(){
+                <span class="tip">//  成功callback</span>
+            }, function(){
+                <span class="tip">//  失败callback</span>
+            });</pre>
+        <p>几个简写的$http方法</p>
+        <label class="label label-default">$http.get()</label>
+        <label class="label label-primary">$http.post()</label>
+        <label class="label label-danger">$http.put()</label>
+        <label class="label label-success">$http.delete()</label>
+        <label class="label label-warning">$http.head()</label>
+        <label class="label label-info">$http.jsonp()</label>
+        <label class="label" style="color: black;">$http.patch()</label>
+    </fieldset>
 </div>
 <br/><br/>
 </body>
